@@ -1,0 +1,12 @@
+@keyframes softRise{0%{opacity:0;transform:translateY(24px) scale(.985)}100%{opacity:1;transform:none}}
+@keyframes speechLineReveal{0%{opacity:0;transform:translateY(18px) scale(.985)}70%{opacity:1;transform:translateY(-1px) scale(1.002)}100%{opacity:1;transform:none}}
+@keyframes orbHaloBreath{0%,100%{transform:translate(-50%,-50%) scale(.92);opacity:.58}45%{transform:translate(-50%,-50%) scale(1.09);opacity:1}68%{transform:translate(-50%,-50%) scale(1.03);opacity:.82}}
+@keyframes orbRingFloat{0%,100%{transform:translate(-50%,-50%) scale(.96);opacity:.48}48%{transform:translate(-50%,-50%) scale(1.055);opacity:.94}72%{transform:translate(-50%,-50%) scale(1.02);opacity:.72}}
+@keyframes orbCanvasFloat{0%,100%{transform:translateY(3px) scale(.99)}48%{transform:translateY(-8px) scale(1.018)}72%{transform:translateY(-2px) scale(1.008)}}
+@keyframes orbAuraPulse{0%,100%{transform:scale(.88);opacity:.42}46%{transform:scale(1.16);opacity:.94}72%{transform:scale(1.04);opacity:.70}}
+@keyframes orbSweep{0%{transform:rotate(0deg) scale(.98)}45%{transform:rotate(154deg) scale(1.025)}100%{transform:rotate(360deg) scale(.98)}}
+@keyframes videoReveal{from{opacity:0;transform:scale(1.012)}to{opacity:1;transform:none}}
+@keyframes rotatePulse{0%,100%{transform:rotate(0) scale(1)}50%{transform:rotate(90deg) scale(1.06)}}
+.text-container.visible .eyebrow,.text-container.visible .heading,.text-container.visible .gold-rule{animation:softRise .52s cubic-bezier(.2,.7,.2,1) both}.text-container.visible .heading{animation-delay:.04s}.text-container.visible .gold-rule{animation-delay:.09s}
+.speech-line{animation-timing-function:cubic-bezier(.2,.7,.2,1)!important}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}

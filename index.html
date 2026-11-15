@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="AI Live Hologram — trợ lý giọng nói Gemini Live." />
+  <title>AI Live Hologram</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <main id="app" aria-label="AI Live Hologram">
+    <div id="status-bar" aria-hidden="true"></div>
+    <div id="state-indicator" role="status" aria-live="polite"><span class="dot"></span><span id="state-label">Khởi tạo</span></div>
+
+    <section id="stage" aria-label="Màn hình Hologram">
+      <div id="stage-content">
+        <div class="decor-frame" aria-hidden="true"></div>
+        <div id="orb-container" class="orb-container">
+          <canvas id="orb-canvas" aria-label="Quả cầu Hologram phản ứng theo âm thanh"></canvas>
+          <div class="orb-aura" aria-hidden="true"></div>
+        </div>
+        <div id="text-container" class="text-container" aria-live="polite">
+          <span class="eyebrow" id="text-kicker">AI LIVE HOLOGRAM</span>
+          <h1 class="heading" id="text-heading">Trợ lý AI</h1>
+          <div class="gold-rule" aria-hidden="true"></div>
+          <p class="body" id="text-body">Chạm microphone để bắt đầu trò chuyện.</p>
+        </div>
+      </div>
+
+      <section id="video-layer" class="video-layer" aria-hidden="true" aria-label="Trình chiếu video">
+        <div id="yt-player" class="video-player"></div>
+        <div id="video-title" class="video-title"></div>
+        <div id="subtitle-overlay" class="subtitle-overlay"><span id="subtitle-text"></span></div>
+        <div class="video-actions">
+          <button id="btn-video-pause" class="video-action" type="button">Tạm dừng</button>
+          <button id="btn-video-resume" class="video-action" type="button">Tiếp tục</button>
+          <button id="btn-video-fullscreen" class="video-action" type="button">Toàn màn hình</button>
+          <button id="btn-video-close" class="video-action video-action--danger" type="button">Đóng</button>
+        </div>
+      </section>
+    </section>
+
+    <nav id="controls-right" aria-label="Điều khiển Hologram">
+      <button class="ctrl-btn" id="btn-mic" type="button" aria-label="Bắt đầu microphone" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg><span class="tooltip">Start / Stop capture</span></button>
+      <button class="ctrl-btn" id="btn-mic-mute" type="button" aria-label="Tạm tắt tiếng microphone" aria-pressed="false" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 9v3a3 3 0 0 0 5.4 1.8"/><path d="M15 9V5a3 3 0 0 0-5.2-2"/><path d="M5 10v2a7 7 0 0 0 11.2 5.6"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="4" y1="4" x2="20" y2="20"/></svg><span class="tooltip">Mute / Unmute microphone</span></button>
+      <button class="ctrl-btn" id="btn-ai-mute" type="button" aria-label="Tắt tiếng AI" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 5 6"/><path d="m21 9-5 6"/></svg><span class="tooltip">Mute / Unmute giọng AI</span></button>
+      <button class="ctrl-btn emergency" id="btn-stop" type="button" aria-label="Dừng toàn bộ"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="2"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg><span class="tooltip">Dừng toàn bộ</span></button>
+      <button class="ctrl-btn" id="btn-mirror" type="button" aria-label="Đổi chế độ lật gương"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"/><path d="M8 7l-4 5 4 5"/><path d="M16 7l4 5-4 5"/></svg><span class="tooltip">Lật gương</span></button>
+      <button class="ctrl-btn" id="btn-settings" type="button" aria-label="Cài đặt" aria-controls="settings-panel" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09A1.65 1.65 0 0 0 19.4 15z"/></svg><span class="tooltip">Cài đặt</span></button>
+    </nav>
+
+    <div id="settings-backdrop" class="settings-backdrop" hidden></div>
+    <section id="settings-panel" class="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title" aria-hidden="true">
+      <div class="sheet-handle"></div>
+      <div class="settings-head"><div><span class="eyebrow">HOLOGRAM SETTINGS</span><h2 id="settings-title">Cài đặt</h2></div><button id="btn-settings-close" class="icon-btn" type="button" aria-label="Đóng">×</button></div>
+      <div class="settings-grid">
+        <div class="field"><label for="gemini-key">Gemini API Key</label><input id="gemini-key" data-gemini-key type="password" autocomplete="off" spellcheck="false" placeholder="Nhập Gemini API Key"/><p class="hint">Key chỉ lưu trong sessionStorage. Biến frontend không bảo vệ API key khỏi người dùng trình duyệt.</p></div>
+        <div class="field"><label for="youtube-key">YouTube Data API Key</label><input id="youtube-key" data-youtube-key type="password" autocomplete="off" spellcheck="false" placeholder="Không bắt buộc"/><p class="hint">Chỉ cần khi muốn tìm video bằng giọng nói.</p></div>
+        <div class="field"><label for="personality">Tính cách AI</label><select id="personality" data-personality><option value="teacher">Giảng viên rõ ràng</option><option value="concise">Ngắn gọn, trực tiếp</option><option value="friendly">Thân thiện, tự nhiên</option></select></div>
+        <div class="field"><label for="voice-name">Giọng nói</label><select id="voice-name" data-voice-name><option value="Aoede">Aoede</option><option value="Kore">Kore</option><option value="Puck">Puck</option><option value="Charon">Charon</option></select></div>
+        <div class="field"><label for="mirror-mode">Chế độ lật gương</label><select id="mirror-mode" data-mirror-mode><option value="none">Không lật</option><option value="vertical">Lật ngang (gương)</option><option value="horizontal">Lật dọc</option><option value="both">Lật cả hai chiều</option></select></div>
+        <div class="field"><label for="audio-input-device">Thiết bị microphone</label><select id="audio-input-device" data-input-device><option value="">Mặc định hệ thống</option></select><p class="hint">Đổi thiết bị sẽ áp dụng ở lần Start capture tiếp theo.</p></div>
+        <div class="field"><label for="audio-output-device">Thiết bị loa</label><select id="audio-output-device" data-output-device><option value="">Mặc định hệ thống</option></select><p class="hint" data-output-device-hint>Chỉ khả dụng khi trình duyệt hỗ trợ AudioContext.setSinkId().</p></div>
+        <div class="field"><label for="disable-transitions">Hiệu ứng chuyển cảnh</label><label class="performance-toggle" for="disable-transitions"><input id="disable-transitions" data-disable-transitions type="checkbox"/><span>Tắt hiệu ứng để ưu tiên độ mượt</span></label><p class="hint">Bỏ animation chuyển cảnh, glow chuyển động và blur nặng; giữ nguyên âm thanh, video và chức năng. Có hiệu lực ngay sau khi Lưu.</p></div>
+        <div class="field"><label for="ai-volume">Âm lượng giọng AI <span data-volume-value>100%</span></label><input id="ai-volume" data-ai-volume type="range" min="0" max="1" step="0.05" value="1"/></div>
+        <div class="field"><label>Trạng thái quyền & âm thanh</label><div class="status-pills"><span data-mic-status>Micro: tắt</span><span data-live-privacy-status>Gemini Live: chưa kết nối</span><span data-output-status>AI audio: bật</span></div></div>
+        <div class="field field--wide"><label for="ai-instructions">AI instructions</label><textarea id="ai-instructions" data-ai-instructions rows="4" placeholder="Chỉ dẫn bổ sung cho AI"></textarea><p class="hint">Không đặt API key hay dữ liệu bí mật trong instructions.</p></div>
+        <div class="privacy-note field--wide"><strong>Quyền riêng tư</strong><p>Khi bạn Start capture, âm thanh microphone được gửi trực tiếp từ trình duyệt tới Google Gemini API để xử lý hội thoại. Transcript và nội dung bạn nói có thể được truyền tới dịch vụ Google theo cấu hình API của bạn. Ứng dụng không tự bật microphone khi chưa có thao tác của bạn và không lưu API key vào file project.</p></div>
+      </div>
+      <div class="settings-actions"><button class="secondary-btn" data-discover-models type="button">Tải danh sách model</button><button class="primary-btn" data-save-preferences type="button">Lưu cài đặt</button></div>
+      <p class="model-message" data-model-message aria-live="polite"></p>
+      <section class="selection-card"><span>Model Live được chọn</span><p data-selection-summary>Chưa tải catalog.</p><div class="live-probe-actions"><button class="secondary-btn" data-verify-live type="button">Xác minh Live</button><button class="secondary-btn" data-close-live type="button" disabled>Đóng Live session</button></div><p class="live-probe-status" data-live-status>Chưa xác minh runtime.</p></section>
+      <details open><summary>Live candidates <span class="count" data-live-count>0</span></summary><div class="model-list" data-live-models></div></details>
+      <details><summary>Text generation <span class="count" data-text-count>0</span></summary><div class="model-list" data-text-models></div></details>
+      <details><summary>Khác / không phù hợp <span class="count" data-other-count>0</span></summary><div class="model-list" data-other-models></div></details>
+    </section>
+
+    <div id="orientation-overlay" aria-live="polite"><div class="rotate-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h6"/></svg></div><h2>Xoay ngang điện thoại</h2><p>Vui lòng xoay thiết bị sang chế độ ngang để sử dụng giao diện Hologram.</p></div>
+    <div id="app-error" role="alert" aria-live="assertive"></div>
+  </main>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

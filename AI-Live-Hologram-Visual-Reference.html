@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#020806" />
+<title>AI Live Hologram — Visual Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#020806;
+  --bg2:#07110d;
+  --ink:#fbf8ef;
+  --muted:rgba(251,248,239,.62);
+  --gold:#d9b873;
+  --gold-2:#f6e7bd;
+  --emerald:#18c98b;
+  --line:rgba(246,231,189,.22);
+  --glass:rgba(255,255,255,.075);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:radial-gradient(circle at 55% 36%,#082018 0,#020806 43%,#010403 100%);color:var(--ink);font-family:"Plus Jakarta Sans",system-ui,sans-serif}
+button{font:inherit}
+#viewport{position:fixed;inset:0;display:grid;place-items:center;overflow:hidden}
+#stage{position:relative;width:1280px;height:720px;transform-origin:center center;overflow:hidden;background:
+  radial-gradient(900px 560px at 78% 12%,rgba(39,123,91,.13),transparent 64%),
+  radial-gradient(700px 480px at 15% 88%,rgba(217,184,115,.075),transparent 66%),
+  linear-gradient(135deg,#020806,#06100c 52%,#030706);
+  box-shadow:0 32px 120px rgba(0,0,0,.72);
+}
+#stage::before{content:"";position:absolute;inset:24px;border:1px solid var(--line);border-radius:18px;pointer-events:none;z-index:90}
+.corner{position:absolute;width:68px;height:68px;z-index:91;pointer-events:none}
+.corner.tl{left:24px;top:24px;border-left:3px solid var(--gold);border-top:3px solid var(--gold)}
+.corner.br{right:24px;bottom:24px;border-right:3px solid var(--gold);border-bottom:3px solid var(--gold)}
+#progress{position:absolute;left:0;top:0;height:4px;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-2));box-shadow:0 0 24px rgba(217,184,115,.42);transition:width .7s var(--ease);z-index:120}
+.slide{position:absolute;inset:0;display:none;overflow:hidden;isolation:isolate}
+.slide.active{display:block}
+.ambient{position:absolute;border-radius:50%;filter:blur(90px);opacity:.18;pointer-events:none}
+.ambient.a{width:420px;height:420px;right:-100px;top:-130px;background:#20d69a}
+.ambient.b{width:360px;height:360px;left:-120px;bottom:-140px;background:#d9b873;opacity:.11}
+.eyebrow{font-size:16px;letter-spacing:.38em;text-transform:uppercase;color:var(--gold-2);font-weight:600}
+h1,h2{font-family:"Playfair Display",serif;line-height:1.02;letter-spacing:-.025em}
+h1{font-size:78px;max-width:720px}
+h2{font-size:64px}
+.gold-text{background:linear-gradient(110deg,#fff7dc 5%,#f6e7bd 34%,#d9b873 64%,#fff4cf 96%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.rule{width:118px;height:2px;background:linear-gradient(90deg,var(--gold),transparent);margin-top:24px}
+.lead{font-size:25px;line-height:1.58;color:rgba(251,248,239,.78);font-weight:300}
+.glass{background:linear-gradient(150deg,rgba(255,255,255,.095),rgba(255,255,255,.035));border:1px solid rgba(246,231,189,.2);box-shadow:0 24px 70px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.12);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
+.anim{opacity:0;transform:translateY(34px) scale(.985);filter:blur(10px)}
+.active .anim{animation:reveal .92s var(--ease) forwards;animation-delay:calc(.16s + var(--d,0)*.11s)}
+@keyframes reveal{to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes softFloat{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-10px,0)}}
+@keyframes kenBurns{from{transform:scale(1.08)}to{transform:scale(1)}}
+
+/* HERO */
+.hero-copy{position:absolute;left:88px;top:112px;width:680px;z-index:8}
+.hero-copy .lead{max-width:590px;margin-top:28px}
+.hero-chips{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.chip{padding:11px 17px;border-radius:999px;font-size:14px;color:var(--gold-2);letter-spacing:.04em}
+.hero-visual{position:absolute;right:86px;top:88px;width:410px;height:544px;border-radius:220px 220px 26px 26px;display:grid;place-items:center;overflow:hidden}
+.hero-visual::after{content:"";position:absolute;inset:12px;border:1px solid rgba(246,231,189,.18);border-radius:inherit;pointer-events:none}
+.orb-shell{width:338px;height:338px;position:relative;display:grid;place-items:center;filter:drop-shadow(0 0 34px rgba(61,210,161,.18));animation:softFloat 6.5s ease-in-out infinite}
+.orb-shell canvas{width:100%;height:100%;display:block}
+.orb-label{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-size:12px;letter-spacing:.32em;color:rgba(246,231,189,.58);white-space:nowrap}
+
+/* SLIDE 2 */
+.split-title{position:absolute;left:86px;top:72px;width:560px}
+.arch-grid{position:absolute;left:86px;right:86px;top:250px;display:grid;grid-template-columns:1.1fr .92fr .92fr;gap:18px}
+.arch-card{min-height:250px;border-radius:24px;padding:28px;position:relative;overflow:hidden}
+.arch-card::before{content:"";position:absolute;width:160px;height:160px;border-radius:50%;right:-55px;top:-50px;background:radial-gradient(circle,rgba(31,216,154,.16),transparent 70%)}
+.arch-card .num{font-family:"Playfair Display",serif;font-size:42px;color:var(--gold)}
+.arch-card h3{font-size:22px;margin-top:24px;margin-bottom:12px;color:var(--gold-2)}
+.arch-card p{color:var(--muted);line-height:1.62;font-size:15px}
+.arch-card:first-child{transform:translateY(18px)}
+
+/* SLIDE 3 */
+.focus-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.focus-copy{width:820px;text-align:center;z-index:4}
+.focus-copy h2{font-size:86px;margin:12px 0 24px}
+.focus-copy .lead{max-width:700px;margin:0 auto}
+.orbit{position:absolute;border-radius:50%;border:1px solid rgba(246,231,189,.12);pointer-events:none}
+.orbit.o1{width:530px;height:530px;right:-80px;top:-80px}.orbit.o2{width:390px;height:390px;right:-10px;top:-10px}.orbit.o3{width:250px;height:250px;right:60px;top:60px;border-color:rgba(217,184,115,.24)}
+
+/* SLIDE 4 */
+.metric-title{position:absolute;left:88px;top:80px;width:700px}
+.metric-cards{position:absolute;left:88px;right:88px;top:292px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.metric{height:250px;border-radius:28px;padding:26px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden}
+.metric strong{font:700 58px/1 "Playfair Display",serif;color:var(--gold-2)}
+.metric span{margin-top:10px;color:rgba(251,248,239,.72);font-size:16px}
+.metric .halo{position:absolute;width:220px;height:220px;border-radius:50%;right:-45px;top:-60px;background:radial-gradient(circle,rgba(51,213,162,.18),rgba(217,184,115,.05) 42%,transparent 72%)}
+
+/* SLIDE 5 */
+.end{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.end h2{font-size:112px}
+.end .lead{margin-top:22px}
+.end .mini-orb{margin:32px auto 0;width:170px;height:170px}
+
+#ui{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);display:flex;align-items:center;gap:12px;z-index:200}
+.nav-btn{width:46px;height:46px;border-radius:50%;border:1px solid rgba(246,231,189,.24);background:rgba(2,8,6,.74);backdrop-filter:blur(14px);color:var(--gold-2);font-size:20px;cursor:pointer;transition:.25s var(--ease)}
+.nav-btn:hover{transform:translateY(-2px);background:rgba(217,184,115,.12);border-color:rgba(217,184,115,.46)}
+#dots{display:flex;gap:7px;align-items:center;padding:0 3px}
+#dots button{width:7px;height:7px;border:0;border-radius:999px;background:rgba(246,231,189,.24);cursor:pointer;transition:.36s var(--ease)}
+#dots button.active{width:28px;background:var(--gold)}
+#hint{position:fixed;right:18px;bottom:20px;color:rgba(251,248,239,.34);font-size:11px;letter-spacing:.12em;z-index:200}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div id="viewport">
+  <div id="stage">
+    <div id="progress"></div>
+    <div class="corner tl"></div><div class="corner br"></div>
+
+    <section class="slide active">
+      <div class="ambient a"></div><div class="ambient b"></div>
+      <div class="hero-copy">
+        <div class="eyebrow anim" style="--d:0">AI LIVE HOLOGRAM</div>
+        <h1 class="anim" style="--d:1">Một giao diện AI<br><span class="gold-text">sống động & tinh tế</span></h1>
+        <div class="rule anim" style="--d:2"></div>
+        <p class="lead anim" style="--d:3">Tập trung vào hội thoại trực tiếp, âm thanh thời gian thực và trải nghiệm thị giác có chiều sâu — không phô trương, không “AI slop”.</p>
+        <div class="hero-chips anim" style="--d:4">
+          <span class="chip glass">Gemini Live</span><span class="chip glass">AudioWorklet</span><span class="chip glass">WebGL / Canvas</span>
+        </div>
+      </div>
+      <div class="hero-visual glass anim" style="--d:2">
+        <div class="orb-shell"><canvas class="orb-canvas" aria-label="AI rainbow orb"></canvas></div>
+        <div class="orb-label">LIVE • RESPONSIVE • AMBIENT</div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="ambient a"></div>
+      <div class="split-title">
+        <div class="eyebrow anim" style="--d:0">KIẾN TRÚC NHẸ</div>
+        <h2 class="anim" style="--d:1">Đủ mô-đun,<br><span class="gold-text">không thừa tầng</span></h2>
+        <div class="rule anim" style="--d:2"></div>
+      </div>
+      <div class="arch-grid">
+        <article class="arch-card glass anim" style="--d:2"><div class="num">01</div><h3>Voice Core</h3><p>AudioWorklet, PCM 16 kHz, queue phát tuần tự và interruption được giữ độc lập để giảm regression.</p></article>
+        <article class="arch-card glass anim" style="--d:3"><div class="num">02</div><h3>AI Session</h3><p>Model discovery, Live session, instruction và fallback được tách khỏi phần audio và visual.</p></article>
+        <article class="arch-card glass anim" style="--d:4"><div class="num">03</div><h3>Presentation</h3><p>Orb, text, video và subtitle chỉ nhận state/level — không điều khiển microphone trực tiếp.</p></article>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="ambient a"></div><div class="ambient b"></div>
+      <div class="orbit o1"></div><div class="orbit o2"></div><div class="orbit o3"></div>
+      <div class="focus-wrap">
+        <div class="focus-copy">
+          <div class="eyebrow anim" style="--d:0">INTERACTION DESIGN</div>
+          <h2 class="anim gold-text" style="--d:1">Speak. React. Flow.</h2>
+          <p class="lead anim" style="--d:2">Orb chuyển sắc cầu vồng kiểu Gemini, phản ứng nhanh nhưng mềm. Nội dung xuất hiện theo staggered timing, dùng easing kiểu Apple/Stripe thay vì chuyển động cơ học.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="ambient a"></div>
+      <div class="metric-title">
+        <div class="eyebrow anim" style="--d:0">QUALITY PRINCIPLES</div>
+        <h2 class="anim" style="--d:1">Thiết kế để<br><span class="gold-text">dùng thật</span></h2>
+        <div class="rule anim" style="--d:2"></div>
+      </div>
+      <div class="metric-cards">
+        <div class="metric glass anim" style="--d:2"><div class="halo"></div><strong>01</strong><span>Audio phản hồi nhanh, ngắt lời tức thì</span></div>
+        <div class="metric glass anim" style="--d:3"><div class="halo"></div><strong>02</strong><span>Typography lớn, rõ, tối đa 4 từ mỗi dòng khi trình chiếu</span></div>
+        <div class="metric glass anim" style="--d:4"><div class="halo"></div><strong>03</strong><span>Glassmorphism vừa đủ, glow có chủ đích</span></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="ambient a"></div><div class="ambient b"></div>
+      <div class="end">
+        <div>
+          <div class="eyebrow anim" style="--d:0">AI LIVE HOLOGRAM</div>
+          <h2 class="anim gold-text" style="--d:1">Ready to present.</h2>
+          <p class="lead anim" style="--d:2">Tinh gọn về kiến trúc. Mượt về chuyển động. Rõ ràng khi sử dụng.</p>
+          <div class="mini-orb anim" style="--d:3"><canvas class="orb-canvas" aria-label="AI rainbow orb"></canvas></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div id="ui"><button class="nav-btn" id="prev" aria-label="Trang trước">‹</button><div id="dots"></div><button class="nav-btn" id="next" aria-label="Trang sau">›</button><button class="nav-btn" id="full" aria-label="Toàn màn hình">⛶</button></div>
+<div id="hint">← → / SPACE / F</div>
+
+<script>
+const stage=document.getElementById('stage');
+const slides=[...document.querySelectorAll('.slide')];
+const dots=document.getElementById('dots');
+const progress=document.getElementById('progress');
+let current=0,busy=false;
+
+function fit(){
+  const reserve=78;
+  const scale=Math.min(innerWidth/1280,(innerHeight-reserve)/720);
+  stage.style.transform=`scale(${scale})`;
+}
+addEventListener('resize',fit,{passive:true});fit();
+
+slides.forEach((_,i)=>{
+  const b=document.createElement('button');
+  b.type='button';b.setAttribute('aria-label',`Đi đến slide ${i+1}`);
+  b.addEventListener('click',()=>go(i));dots.appendChild(b);
+});
+function sync(){
+  [...dots.children].forEach((b,i)=>b.classList.toggle('active',i===current));
+  progress.style.width=`${((current+1)/slides.length)*100}%`;
+}
+
+const enterFrames=[
+  {opacity:0,filter:'blur(22px)',transform:'scale(1.045) translateY(18px)'},
+  {opacity:1,filter:'blur(0)',transform:'none'}
+];
+const leaveFrames=[
+  {opacity:1,filter:'blur(0)',transform:'none'},
+  {opacity:0,filter:'blur(15px)',transform:'scale(.985) translateY(-12px)'}
+];
+async function go(index){
+  if(busy||index<0||index>=slides.length||index===current)return;
+  busy=true;
+  const old=slides[current],next=slides[index];
+  next.classList.add('active');next.style.zIndex=3;old.style.zIndex=2;
+  next.getAnimations({subtree:true}).forEach(a=>a.cancel());
+  const inAnim=next.animate(enterFrames,{duration:760,easing:'cubic-bezier(.16,1,.3,1)',fill:'both'});
+  const outAnim=old.animate(leaveFrames,{duration:560,easing:'cubic-bezier(.4,0,.2,1)',fill:'both'});
+  current=index;sync();
+  await Promise.allSettled([inAnim.finished,outAnim.finished]);
+  old.classList.remove('active');old.style.zIndex='';next.style.zIndex='';
+  inAnim.cancel();outAnim.cancel();busy=false;
+}
+
+document.getElementById('prev').onclick=()=>go(current-1);
+document.getElementById('next').onclick=()=>go(current+1);
+document.getElementById('full').onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});
+addEventListener('keydown',e=>{
+  if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();go(current+1)}
+  if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();go(current-1)}
+  if(e.key.toLowerCase()==='f')document.getElementById('full').click();
+});
+let touchX=null;
+addEventListener('touchstart',e=>touchX=e.touches[0]?.clientX,{passive:true});
+addEventListener('touchend',e=>{if(touchX==null)return;const dx=(e.changedTouches[0]?.clientX??touchX)-touchX;if(Math.abs(dx)>55)go(current+(dx<0?1:-1));touchX=null},{passive:true});
+sync();
+
+/* Rainbow Gemini-like orb — deterministic procedural animation, no external library. */
+const canvases=[...document.querySelectorAll('.orb-canvas')];
+const orbStates=canvases.map(canvas=>{
+  const ctx=canvas.getContext('2d');
+  const dpr=Math.min(devicePixelRatio||1,2);
+  const box=canvas.getBoundingClientRect();
+  const size=Math.max(140,Math.round(Math.min(box.width||338,box.height||338)));
+  canvas.width=Math.round(size*dpr);canvas.height=Math.round(size*dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  return {canvas,ctx,size,dpr,phase:Math.random()*Math.PI*2};
+});
+function drawOrb(state,t){
+  const {ctx,size}=state,c=size/2;
+  ctx.clearRect(0,0,size,size);
+  const pulse=1+Math.sin(t*.0016+state.phase)*.018;
+  const energy=.72+.28*Math.sin(t*.0011+state.phase*.6)**2;
+  const r=size*.34*pulse;
+  ctx.save();ctx.globalCompositeOperation='lighter';
+  for(let i=0;i<10;i++){
+    const hue=(t*.035+i*34+state.phase*80)%360;
+    const rr=r*(.78+i*.032)+Math.sin(t*.0018+i)*size*.008;
+    ctx.beginPath();
+    ctx.arc(c,c,rr,0,Math.PI*2);
+    ctx.strokeStyle=`hsla(${hue},88%,64%,${.045+i*.006})`;
+    ctx.lineWidth=size*(.026-i*.0013);
+    ctx.shadowBlur=18+i*3;ctx.shadowColor=`hsla(${hue},90%,60%,.45)`;ctx.stroke();
+  }
+  const inner=ctx.createRadialGradient(c-size*.08,c-size*.1,size*.02,c,c,r*.92);
+  inner.addColorStop(0,`hsla(${(t*.025+160)%360},90%,68%,.34)`);
+  inner.addColorStop(.4,`hsla(${(t*.025+220)%360},92%,52%,.18)`);
+  inner.addColorStop(1,'rgba(2,8,6,0)');
+  ctx.fillStyle=inner;ctx.beginPath();ctx.arc(c,c,r*.94,0,Math.PI*2);ctx.fill();
+  for(let k=0;k<7;k++){
+    const a=t*.00035*(k%2?1:-1)+k*.9+state.phase;
+    const x=c+Math.cos(a)*r*(.22+k*.072);
+    const y=c+Math.sin(a)*r*(.18+k*.058);
+    const hue=(t*.045+k*48)%360;
+    ctx.fillStyle=`hsla(${hue},90%,70%,${.10*energy})`;
+    ctx.shadowBlur=14;ctx.shadowColor=`hsla(${hue},90%,64%,.52)`;
+    ctx.beginPath();ctx.arc(x,y,size*(.007+k*.0012),0,Math.PI*2);ctx.fill();
+  }
+  ctx.restore();
+}
+function orbLoop(t){for(const s of orbStates)drawOrb(s,t);requestAnimationFrame(orbLoop)}requestAnimationFrame(orbLoop);
+</script>
+</body>
+</html>
